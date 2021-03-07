@@ -84,11 +84,28 @@ hs.hotkey.bind({"cmd", "alt", "ctrl"}, 'Down', function()
   f.h = max.h / 2
   window:setFrame(f)
 end)
---move window to NEXT screen (retaining its relative position and size)
+-- move window to NEXT screen (retaining its relative position and size)
 hs.hotkey.bind({"cmd", "alt", "ctrl"}, 'pageup', function()
 	hs.window.focusedWindow():moveOneScreenEast()
 end)
---move window to PREVIOUS screen (retaining its relative position and size)
+-- move window to PREVIOUS screen (retaining its relative position and size)
 hs.hotkey.bind({"cmd", "alt", "ctrl"}, 'pagedown', function()
 	hs.window.focusedWindow():moveOneScreenWest()
+end)
+-- toggle window FULL screen
+hs.hotkey.bind({"cmd", "alt", "ctrl"}, 'home', function()
+	hs.window.focusedWindow():toggleZoom()
+end)
+-- MAXIMIZE window
+hs.hotkey.bind({"cmd", "alt", "ctrl"}, 'end', function()
+	local window = hs.window.focusedWindow()
+	local f = window:frame()
+	local screen = window:screen()
+	local max = screen:frame()
+
+	f.x = max.x
+	f.y = max.y
+	f.w = max.w
+	f.h = max.h
+	window:setFrame(f)
 end)
