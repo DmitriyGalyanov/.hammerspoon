@@ -33,23 +33,7 @@ hs.hotkey.bind({"cmd", "alt", "ctrl"}, "Right", function()
   local f = window:frame()
   local screen = window:screen()
   local max = screen:frame()
-  -- reduce window (placed in RIGHT HALF of screen) [widht] to 1/3 of SCREEN_WIDTH
-  -- REMOVE f.y and f.h???
-  if (f.x == (max.x + (max.w / 2)) and f.y == max.y and f.w == max.w / 2 and f.h == max.h) then
-    f.x = max.x + max.w / 3 * 2
-    f.w = max.w / 3
-    window:setFrame(f)
-    return
-  end
-  -- expand window (placed in LEFT HALF of screen) [width] to 2/3 of SCREEN_WIDTH
-  if (f.x == max.x and f.y == max.y and f.w == max.w / 2 and f.h == max.h) then
-    -- f.x
-    f.w = max.w / 3 * 2
-    window:setFrame(f)
-    return
-  end
 
-  -- DEFAULT behavior
   f.x = max.x + (max.w / 2)
   f.y = max.y
   f.w = max.w / 2
@@ -64,53 +48,99 @@ hs.hotkey.bind({"cmd", "alt", "ctrl"}, "Left", function()
   local f = window:frame()
   local screen = window:screen()
   local max = screen:frame()
-  -- reduce window (placed in LEFT HALF of screen) [width] to 1/3 of SCREEN_WIDTH
-  if (f.x == max.x and f.y == max.y and f.w == (max.w / 2) and f.h == max.h) then
-    f.w = max.w / 3
-    window:setFrame(f)
-    return
-  end
-  -- expand window (placed in RIGHT HALF of screen) [width] to 2/3 of SCREEN_WIDTH
-  if (f.x == (max.x + (max.w / 2)) and f.w == (max.w / 2)) then
-    -- hs.spotify.displayCurrentTrack()
-    f.x = max.x + max.w / 3
-    f.w = max.w / 3 * 2
-    window:setFrame(f)
-    return
-  end
-  -- DEFAULT behavior
+
   f.x = max.x
   f.y = max.y
   f.w = max.w / 2
   f.h = max.h
   window:setFrame(f)
 end)
--- move window to TOP HALF of screen with
--- HEIGHT = SCREEN_HEIGHT / 2
-hs.hotkey.bind({"cmd", "alt", "ctrl"}, 'Up', function()
+-- change window width [LEFT]
+hs.hotkey.bind({"cmd", "ctrl"}, "Left", function()
   local window = hs.window.focusedWindow()
   local f = window:frame()
   local screen = window:screen()
   local max = screen:frame()
-
-  -- f.x = max.x + (max.w / 2)
+  -- if placed in the LEFT PART of screen -- shrinks to left
+  if f.x == max.x then
+    if (f.w - 1 >= max.w / 3 * 2) then
+      f.w = max.w / 3 * 2
+    elseif (f.w - 1 >= max.w / 2) then
+      f.w = max.w / 2
+    elseif (f.w >= max.w / 2) then
+      f.w = max.w / 3
+    elseif (f.w >= max.w / 3) then
+      f.w = max.w / 3
+    end
+  end
+  -- if placed in the RIGHT PART of screen -- expands to left
+  if f.x > 3 then
+    if (f.w + 1 <= max.w / 3) then
+      f.w = max.w / 3
+      f.x = max.w / 3 * 2
+    elseif (f.w + 1 < max.w / 2) then
+      f.w = max.w / 2
+      f.x = max.w / 2
+    elseif (f.w < max.w / 3 * 2) then
+      f.w = max.w / 3 * 2
+      f.x = max.w / 3
+    end
+  end
+  window:setFrame(f)
+end)
+-- change window width [RIGHT]
+hs.hotkey.bind({"cmd", "ctrl"}, "Right", function()
+  local window = hs.window.focusedWindow()
+  local f = window:frame()
+  local screen = window:screen()
+  local max = screen:frame()
+  -- if placed in the LEFT CORNER of screen -- expands to right
+  if f.x == max.x then
+    if (f.w + 1 <= max.w / 3) then
+      f.w = max.w / 3
+    elseif (f.w + 1<= max.w / 2) then
+      f.w = max.w / 2
+    elseif (f.w + 1<= max.w / 3 * 2) then
+      f.w = max.w / 3 * 2
+    end
+  end
+  -- if placed in the RIGHT PART of screen -- shrinks to right
+  if f.x > 3 then
+    if (f.w - 1 >= max.w / 3 * 2) then
+      f.w = max.w / 3 * 2
+      f.x = max.w / 3
+    elseif (f.w - 1 >= max.w / 2) then
+      f.w = max.w / 2
+      f.x = max.w / 2
+    elseif (f.w - 1 >= max.w / 2) then
+      f.w = max.w / 3
+      f.x = max.w / 3 * 2
+    elseif (f.w >= max.w / 3) then
+      f.w = max.w / 3
+      f.x = max.w / 3 * 2
+    end
+  end
+  window:setFrame(f)
+end)
+-- move window to TOP HALF of screen with
+-- HEIGHT = SCREEN_HEIGHT / 2
+hs.hotkey.bind({"cmd", "ctrl"}, 'Up', function()
+  local window = hs.window.focusedWindow()
+  local f = window:frame()
+  local screen = window:screen()
+  local max = screen:frame()
   f.y = max.y
-  -- f.w = max.w / 2
   f.h = max.h / 2
   window:setFrame(f)
 end)
 -- move window to BOTTOM HALF of screen with
 -- HEIGHT = SCREEN_HEIGHT / 2
-hs.hotkey.bind({"cmd", "alt", "ctrl"}, 'Down', function()
+hs.hotkey.bind({"cmd", "ctrl"}, 'Down', function()
   local window = hs.window.focusedWindow()
   local f = window:frame()
   local screen = window:screen()
   local max = screen:frame()
-
-  -- f.x = max.x + (max.w / 2)
-  -- f.y = max.y
 	f.y = max.y + (max.h / 2)
-  -- f.w = max.w / 2
   f.h = max.h / 2
   window:setFrame(f)
 end)
