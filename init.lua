@@ -33,7 +33,23 @@ hs.hotkey.bind({"cmd", "alt", "ctrl"}, "Right", function()
   local f = window:frame()
   local screen = window:screen()
   local max = screen:frame()
+  -- reduce window (placed in RIGHT HALF of screen) [widht] to 1/3 of SCREEN_WIDTH
+  -- REMOVE f.y and f.h???
+  if (f.x == (max.x + (max.w / 2)) and f.y == max.y and f.w == max.w / 2 and f.h == max.h) then
+    f.x = max.x + max.w / 3 * 2
+    f.w = max.w / 3
+    window:setFrame(f)
+    return
+  end
+  -- expand window (placed in LEFT HALF of screen) [width] to 2/3 of SCREEN_WIDTH
+  if (f.x == max.x and f.y == max.y and f.w == max.w / 2 and f.h == max.h) then
+    -- f.x
+    f.w = max.w / 3 * 2
+    window:setFrame(f)
+    return
+  end
 
+  -- DEFAULT behavior
   f.x = max.x + (max.w / 2)
   f.y = max.y
   f.w = max.w / 2
@@ -48,7 +64,21 @@ hs.hotkey.bind({"cmd", "alt", "ctrl"}, "Left", function()
   local f = window:frame()
   local screen = window:screen()
   local max = screen:frame()
-
+  -- reduce window (placed in LEFT HALF of screen) [width] to 1/3 of SCREEN_WIDTH
+  if (f.x == max.x and f.y == max.y and f.w == (max.w / 2) and f.h == max.h) then
+    f.w = max.w / 3
+    window:setFrame(f)
+    return
+  end
+  -- expand window (placed in RIGHT HALF of screen) [width] to 2/3 of SCREEN_WIDTH
+  if (f.x == (max.x + (max.w / 2)) and f.w == (max.w / 2)) then
+    -- hs.spotify.displayCurrentTrack()
+    f.x = max.x + max.w / 3
+    f.w = max.w / 3 * 2
+    window:setFrame(f)
+    return
+  end
+  -- DEFAULT behavior
   f.x = max.x
   f.y = max.y
   f.w = max.w / 2
