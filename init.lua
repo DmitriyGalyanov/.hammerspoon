@@ -157,7 +157,7 @@ hs.hotkey.bind({"cmd", "alt", "ctrl"}, 'home', function()
 	hs.window.focusedWindow():toggleZoom()
 end)
 -- MAXIMIZE window
-hs.hotkey.bind({"cmd", "alt", "ctrl"}, 'end', function()
+hs.hotkey.bind({"cmd", "ctrl"}, 'end', function()
 	local window = hs.window.focusedWindow()
 	local f = window:frame()
 	local screen = window:screen()
